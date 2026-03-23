@@ -1,0 +1,155 @@
+@model IEnumerable<webquanlykhachsan.Controllers.RoomSearchViewModel>
+
+@{
+    ViewData["Title"] = "Kết Quả Tìm Kiếm";
+    var checkIn = (DateTime)ViewBag.CheckIn;
+    var checkOut = (DateTime)ViewBag.CheckOut;
+    var duration = (checkOut - checkIn).Days;
+}
+
+<div class="bg-white border-bottom py-3 mb-4">
+    <div class="container">
+        <div class="d-flex align-items-center text-muted small">
+            <span class="me-2"><i class="fa-solid fa-house"></i></span>
+            <span class="me-2"><i class="fa-solid fa-chevron-right fs-xs"></i></span>
+            <span class="me-2 text-dark">Kết quả tìm kiếm</span>
+        </div>
+    </div>
+</div>
+
+<div class="container py-4">
+    <div class="row">
+        <!-- Sidebar Filters -->
+        <div class="col-lg-3 d-none d-lg-block">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h6 class="fw-bold mb-3">Lọc theo:</h6>
+                    <hr />
+                    <div class="mb-4">
+                        <label class="fw-bold small mb-2">Ngân sách của bạn (mỗi đêm)</label>
+                        <div class="form-check small mb-1">
+                            <input class="form-check-input" type="checkbox" id="p1">
+                            <label class="form-check-label" for="p1">0 VND - 500,000 VND</label>
+                        </div>
+                        <div class="form-check small mb-1">
+                            <input class="form-check-input" type="checkbox" id="p2">
+                            <label class="form-check-label" for="p2">500,000 VND - 1,000,000 VND</label>
+                        </div>
+                        <div class="form-check small mb-1">
+                            <input class="form-check-input" type="checkbox" id="p3">
+                            <label class="form-check-label" for="p3">1,000,000 VND +</label>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="fw-bold small mb-2">Tiện nghi</label>
+                        <div class="form-check small mb-1">
+                            <input class="form-check-input" type="checkbox" id="f1">
+                            <label class="form-check-label" for="f1">WiFi miễn phí</label>
+                        </div>
+                        <div class="form-check small mb-1">
+                            <input class="form-check-input" type="checkbox" id="f2">
+                            <label class="form-check-label" for="f2">Hồ bơi</label>
+                        </div>
+                        <div class="form-check small mb-1">
+                            <input class="form-check-input" type="checkbox" id="f3">
+                            <label class="form-check-label" for="f3">Chỗ đậu xe</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold mb-0">Khách sạn của chúng tôi: tìm thấy @Model.Count() loại phòng</h4>
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Sắp xếp theo: Phổ biến nhất
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Giá thấp nhất</a></li>
+                        <li><a class="dropdown-item" href="#">Giá cao nhất</a></li>
+                        <li><a class="dropdown-item" href="#">Đánh giá hàng đầu</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger shadow-sm">
+                    <i class="fa-solid fa-circle-exclamation me-2"></i>@TempData["Error"]
+                </div>
+            }
+
+            @foreach (var item in Model)
+            {
+                <div class="card mb-4 shadow-sm border overflow-hidden">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            @{
+                                var imageUrl = !string.IsNullOrEmpty(item.RoomType.ImageUrl) ? item.RoomType.ImageUrl : "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60";
+                            }
+                            <img src="@imageUrl" class="img-fluid h-100 w-100 object-fit-cover" alt="@item.RoomType.Name" style="min-height: 200px;">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body h-100 d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h5 class="card-title fw-bold text-primary mb-1">@item.RoomType.Name</h5>
+                                        <div class="text-warning small mb-2">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star-half-stroke"></i>
+                                        </div>
+                                        <p class="card-text small text-muted mb-2">@item.RoomType.Description</p>
+                                        <div class="d-flex gap-2 mb-3">
+                                            <span class="capacity-badge"><i class="fa-solid fa-user me-1"></i> @item.RoomType.Capacity người</span>
+                                            <span class="capacity-badge text-success"><i class="fa-solid fa-check me-1"></i> WiFi miễn phí</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="badge bg-primary mb-1">Tuyệt vời</div>
+                                        <div class="fw-bold small">8.9 điểm</div>
+                                        <div class="text-muted small">120 đánh giá</div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto d-flex justify-content-between align-items-end border-top pt-3">
+                                    <div>
+                                        <div class="text-danger fw-bold small mb-1">Chỉ còn @item.AvailableRoomsCount phòng trống!</div>
+                                        <div class="text-muted small">Giá cho @duration đêm, @item.RoomType.Capacity người</div>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="price-tag mb-1">@((item.RoomType.BasePrice * duration).ToString("N0")) VND</div>
+                                        <p class="text-muted small mb-2">Đã bao gồm thuế và phí</p>
+                                        <form asp-action="Create" method="post">
+                                            <input type="hidden" name="roomId" value="@item.FirstAvailableRoomId" />
+                                            <input type="hidden" name="checkIn" value="@checkIn.ToString("yyyy-MM-dd")" />
+                                            <input type="hidden" name="checkOut" value="@checkOut.ToString("yyyy-MM-dd")" />
+                                            <button type="submit" class="btn btn-booking px-4">Xem chỗ trống</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (!Model.Any())
+            {
+                <div class="card shadow-sm text-center py-5">
+                    <div class="card-body">
+                        <i class="fa-solid fa-magnifying-glass-location fa-4x text-muted mb-4"></i>
+                        <h4 class="fw-bold">Rất tiếc, không tìm thấy phòng!</h4>
+                        <p class="text-muted">Thử thay đổi ngày nhận phòng hoặc trả phòng để tìm thêm lựa chọn.</p>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-booking mt-3">Quay lại trang tìm kiếm</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

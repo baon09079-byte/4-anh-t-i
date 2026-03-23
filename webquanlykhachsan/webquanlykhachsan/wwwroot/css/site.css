@@ -1,0 +1,107 @@
+/* Custom styles for the Booking-like redesign */
+:root {
+    --booking-blue: #003580;
+    --booking-yellow: #febb02;
+    --booking-light-blue: #0071c2;
+    --booking-bg: #f5f5f5;
+}
+
+body {
+    background-color: var(--booking-bg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding-bottom: 0;
+}
+
+.navbar {
+    background-color: var(--booking-blue) !important;
+    padding: 15px 0;
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    color: white !important;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.hero-section {
+    background-color: var(--booking-blue);
+    color: white;
+    padding: 60px 0 100px 0;
+    margin-bottom: -50px;
+}
+
+.search-box-container {
+    background-color: var(--booking-yellow);
+    padding: 4px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.search-box-inner {
+    background-color: white;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.btn-booking {
+    background-color: var(--booking-light-blue);
+    color: white;
+    font-weight: bold;
+    border: none;
+}
+
+.btn-booking:hover {
+    background-color: #00487a;
+    color: white;
+}
+
+.card {
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.text-primary {
+    color: var(--booking-light-blue) !important;
+}
+
+footer {
+    background-color: #f5f5f5;
+    margin-top: 50px;
+    padding: 40px 0;
+}
+
+/* Helper classes */
+.price-tag {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.capacity-badge {
+    background-color: #e9ecef;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
