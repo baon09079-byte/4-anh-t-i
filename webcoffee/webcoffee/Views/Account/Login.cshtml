@@ -1,0 +1,99 @@
+@model webcoffee.Models.LoginViewModel
+@{
+    Layout = null; // Don't use standard sidebar layout for login
+}
+
+<!DOCTYPE html>
+<html lang="vi" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập - Urban Coffee</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--navy-dark) !important;
+            color: var(--silver);
+        }
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            background-color: var(--navy-light);
+            border: 1px solid var(--gold);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .login-logo {
+            font-size: 2.5rem;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 900;
+        }
+        .input-group-text {
+            border-color: rgba(197, 160, 89, 0.3);
+        }
+        .form-control {
+            border-color: rgba(197, 160, 89, 0.3);
+        }
+        .form-control:focus {
+            background-color: var(--navy-dark);
+            border-color: var(--gold);
+            color: white;
+            box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="login-logo">
+            <i class="bi bi-cup-hot-fill"></i><br>
+            URBAN
+        </div>
+        
+        <h4 class="text-center text-gold mb-4">ĐĂNG NHẬP</h4>
+
+        <form asp-action="Login" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+            
+            <div class="mb-3">
+                <label asp-for="Username" class="form-label text-gold">Tên đăng nhập</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-navy-dark text-gold"><i class="bi bi-person"></i></span>
+                    <input asp-for="Username" class="form-control bg-navy-dark text-white" placeholder="admin">
+                </div>
+                <span asp-validation-for="Username" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Password" class="form-label text-gold">Mật khẩu</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-navy-dark text-gold"><i class="bi bi-lock"></i></span>
+                    <input asp-for="Password" type="password" class="form-control bg-navy-dark text-white" placeholder="********">
+                </div>
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-gold btn-lg">ĐĂNG NHẬP</button>
+            </div>
+        </form>
+
+        <div class="mt-4 text-center">
+            <p class="text-muted small">Chưa có tài khoản? <a asp-action="Register" class="text-gold text-decoration-none">Đăng ký ngay</a></p>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

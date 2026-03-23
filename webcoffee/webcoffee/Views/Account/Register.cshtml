@@ -1,0 +1,88 @@
+@model webcoffee.Models.RegisterViewModel
+@{
+    Layout = null; // Don't use standard sidebar layout for registration
+}
+
+<!DOCTYPE html>
+<html lang="vi" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng ký thành viên - Urban Coffee</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--navy-dark) !important;
+            color: var(--silver);
+        }
+        .register-card {
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            background-color: var(--navy-light);
+            border: 1px solid var(--gold);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .form-control, .form-select {
+            border-color: rgba(197, 160, 89, 0.3);
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: var(--navy-dark);
+            border-color: var(--gold);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-card">
+        <h3 class="text-center text-gold mb-4">ĐĂNG KÝ THÀNH VIÊN</h3>
+
+        <form asp-action="Register" method="post">
+            <div class="mb-3">
+                <label asp-for="Username" class="form-label text-gold">Tên đăng nhập</label>
+                <input asp-for="Username" class="form-control bg-navy-dark text-white">
+                <span asp-validation-for="Username" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label text-gold">Họ và Tên</label>
+                <input asp-for="FullName" class="form-control bg-navy-dark text-white">
+                <span asp-validation-for="FullName" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label text-gold">Mật khẩu</label>
+                <input asp-for="Password" type="password" class="form-control bg-navy-dark text-white">
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Role" class="form-label text-gold">Vai trò</label>
+                <select asp-for="Role" class="form-select bg-navy-dark text-white">
+                    <option value="Staff">Nhân viên (Staff)</option>
+                    <option value="Admin">Quản trị viên (Admin)</option>
+                </select>
+                <span asp-validation-for="Role" class="text-danger small"></span>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-gold btn-lg">ĐĂNG KÝ TÀI KHOẢN</button>
+            </div>
+        </form>
+
+        <div class="mt-4 text-center">
+            <p class="text-muted small">Đã có tài khoản? <a asp-action="Login" class="text-gold text-decoration-none">Đăng nhập ngay</a></p>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

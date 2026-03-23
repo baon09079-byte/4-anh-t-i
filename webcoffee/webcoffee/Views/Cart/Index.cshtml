@@ -1,0 +1,79 @@
+@model List<webcoffee.Models.CartItem>
+@{
+    ViewData["Title"] = "Xác nhận món";
+    int? tableId = ViewBag.TableId;
+}
+
+<div class="container">
+    <h1 class="text-gold mb-4">Danh sách món đã chọn</h1>
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-secondary text-center bg-navy-light border-gold" role="alert">
+            <h4 class="alert-heading text-gold">Chưa có món nào được chọn!</h4>
+            <p>Vui lòng chọn món từ thực đơn.</p>
+            <hr>
+            <a asp-controller="Menu" asp-action="Index" asp-route-tableId="@tableId" class="btn btn-gold">Quay lại thực đơn</a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-elegant table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Sản phẩm</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Tổng</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="@item.ImageUrl" alt="@item.ProductName" class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                    <span>@item.ProductName</span>
+                                </div>
+                            </td>
+                            <td>@item.Price.ToString("N0") VNĐ</td>
+                            <td>@item.Quantity</td>
+                            <td class="text-gold fw-bold">@item.Total.ToString("N0") VNĐ</td>
+                            <td>
+                                <a asp-action="RemoveFromCart" asp-route-id="@item.ProductId" asp-route-tableId="@tableId" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i> Xóa
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end fw-bold fs-5">Tạm tính:</td>
+                        <td class="text-gold fw-bold fs-4">@Model.Sum(i => i.Total).ToString("N0") VNĐ</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a asp-action="ClearCart" asp-route-tableId="@tableId" class="btn btn-outline-secondary">Xóa tất cả</a>
+            
+            @if (tableId.HasValue)
+            {
+                <form asp-action="ConfirmToTable" method="post">
+                    <input type="hidden" name="tableId" value="@tableId" />
+                    <button type="submit" class="btn btn-gold btn-lg px-5">XÁC NHẬN VÀO BÀN</button>
+                </form>
+            }
+            else
+            {
+                <a asp-controller="Order" asp-action="Checkout" class="btn btn-gold btn-lg px-5">THANH TOÁN NHANH</a>
+            }
+        </div>
+    }
+</div>

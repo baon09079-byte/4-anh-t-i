@@ -1,0 +1,108 @@
+@model webcoffee.Models.Table
+@{
+    ViewData["Title"] = "Quản lý " + Model.Name;
+    var currentOrder = ViewBag.CurrentOrder as webcoffee.Models.Order;
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card p-4 mb-4">
+            <h3 class="text-gold">@Model.Name</h3>
+            <div class="mb-3">
+                Trạng thái: 
+                @if (Model.IsOccupied)
+                {
+                    <span class="text-gold fw-bold">BẬN</span>
+                }
+                else
+                {
+                    <span class="text-success fw-bold">TRỐNG</span>
+                }
+            </div>
+
+            @if (!Model.IsOccupied)
+            {
+                <form asp-action="OpenOrder" method="post">
+                    <input type="hidden" name="tableId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-gold w-100">MỞ BÀN MỚI</button>
+                </form>
+            }
+            else if (currentOrder != null)
+            {
+                <div class="mb-4">
+                    <h5>Thao tác nhanh:</h5>
+                    <form asp-action="UpdateOrderStatus" method="post" class="d-grid gap-2">
+                        <input type="hidden" name="orderId" value="@currentOrder.Id" />
+                        <button type="submit" name="status" value="@((int)webcoffee.Models.OrderStatus.DangChuanBi)" class="btn btn-outline-warning">Đang chuẩn bị</button>
+                        <button type="submit" name="status" value="@((int)webcoffee.Models.OrderStatus.DaPhucVu)" class="btn btn-outline-info">Đã phục vụ</button>
+                        <button type="submit" name="status" value="@((int)webcoffee.Models.OrderStatus.DaThanhToan)" class="btn btn-success">Thanh toán & Đóng bàn</button>
+                        <button type="submit" name="status" value="@((int)webcoffee.Models.OrderStatus.DaHuy)" class="btn btn-danger">Hủy đơn</button>
+                    </form>
+                </div>
+            }
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary w-100 mt-2">Quay lại sơ đồ</a>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card p-4">
+            @if (currentOrder != null)
+            {
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="m-0 text-gold">HÓA ĐƠN HIỆN TẠI (#@currentOrder.Id)</h3>
+                    <a asp-controller="Menu" asp-action="Index" asp-route-tableId="@Model.Id" class="btn btn-gold">
+                        <i class="bi bi-plus-lg me-1"></i> THÊM MÓN
+                    </a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-elegant">
+                        <thead>
+                            <tr>
+                                <th>Tên món</th>
+                                <th class="text-center">SL</th>
+                                <th class="text-end">Đơn giá</th>
+                                <th class="text-end">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (currentOrder.OrderDetails.Any())
+                            {
+                                foreach (var item in currentOrder.OrderDetails)
+                                {
+                                    <tr>
+                                        <td>@item.Product.Name</td>
+                                        <td class="text-center">@item.Quantity</td>
+                                        <td class="text-end">@item.Price.ToString("N0")</td>
+                                        <td class="text-end fw-bold">@((item.Price * item.Quantity).ToString("N0"))</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4 italic">Chưa có món nào được gọi.</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end fw-bold fs-5 pt-3">TỔNG CỘNG:</td>
+                                <td class="text-gold fw-bold fs-4 pt-3 text-end">
+                                    @currentOrder.OrderDetails.Sum(i => i.Price * i.Quantity).ToString("N0") VNĐ
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-info-circle display-4 text-muted mb-3"></i>
+                    <p class="text-muted">Mở bàn để bắt đầu quản lý đơn hàng.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
